@@ -1,0 +1,42 @@
+$col: #aaaaaa;
+$colHi: #ffffff;
+$border: 1px solid $col;
+$borderHi: 1px solid $colHi;
+
+body {
+    background-image: url("./resources/background_dotted-halftone.jpg");
+    background-position: center;
+    background-repeat: repeat;
+}
+
+p,
+span,
+a,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+button {
+    color: $col;
+    font-family: monospace, Courier;
+}
+input,
+textarea,
+button{
+    background: none;
+    border: $border;
+}
+input:hover,
+input:focus,
+textarea:hover,
+textarea:focus,
+button:hover,
+button:focus {
+    border: $borderHi;
+    outline: none;
+}
