@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { ApiDaemon } from "./apiDaemon";
 
-import Authenticator from "./components/authentication";
 import Bookmarks from "./components/bookmarks";
+import Uploader from "./components/uploader"
 
 function App() {
   const daemon = new ApiDaemon();
@@ -20,7 +20,7 @@ function App() {
     </>
   ) : (
     <>
-      <Authenticator daemon={daemon} />
+      <Uploader daemon={daemon} />
     </>
   );
 }

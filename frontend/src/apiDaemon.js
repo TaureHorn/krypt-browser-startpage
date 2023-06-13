@@ -3,14 +3,17 @@ import axios from "axios";
 const URL = "http://localhost:3334";
 
 export class ApiDaemon {
-  async authenticate(str) {
-    const authAttempt = await axios.post(`${URL}/auth`, { str });
-      console.log(authAttempt.status)
-    if (authAttempt.status === 200) {
-      // window.localStorage.setItem("authToken", authAttempt.data);
-      // window.location.reload();
+  async decrypt(obj) {
+    const decryptAttempt = await axios.post(`${URL}/decrypt`, { obj });
+    if (decryptAttempt.status === 200) {
+        console.log(decryptAttempt.data)
     } else {
-      return authAttempt.status;
+      return typeof decryptAttempt.status;
     }
   }
+
+    async encrypt(obj) {
+        const encryptAttempt = await axios.post(`${URL}/encrypt`, { obj });
+        console.log(encryptAttempt.data)
+    }
 }

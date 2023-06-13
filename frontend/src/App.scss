@@ -4,9 +4,9 @@ $border: 1px solid $col;
 $borderHi: 1px solid $colHi;
 
 body {
-    background-image: url("./resources/background_dotted-halftone.jpg");
-    background-position: center;
-    background-repeat: repeat;
+  background-image: url("./resources/background_dotted-halftone.jpg");
+  background-position: center;
+  background-repeat: repeat;
 }
 
 p,
@@ -20,16 +20,17 @@ h4,
 h5,
 h6,
 input,
+label,
 textarea,
 button {
-    color: $col;
-    font-family: monospace, Courier;
+  color: $col;
+  font-family: monospace, Courier;
 }
 input,
 textarea,
-button{
-    background: none;
-    border: $border;
+button {
+  background: none;
+  border: $border;
 }
 input:hover,
 input:focus,
@@ -37,6 +38,13 @@ textarea:hover,
 textarea:focus,
 button:hover,
 button:focus {
-    border: $borderHi;
-    outline: none;
+  border: $borderHi;
+  outline: none;
+}
+.textCenter {
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }

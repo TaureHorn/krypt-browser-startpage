@@ -5,6 +5,9 @@ exports.authenticate = async function (req, res) {
     full: req.body.str,
     leader: req.body.str.slice(0, 12),
   };
+  if (pass.full.length != 44) {
+    return res.status(200).send("invalid authentication key");
+  }
   bcrypt.compare(pass.leader, process.env.HASH, function (err, result) {
     if (result === true) {
       console.log(`bcrypt hash comparison has returned true`);
