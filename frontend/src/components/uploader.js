@@ -10,29 +10,50 @@ export default function Uploader(props) {
 
   async function dataPusher(e) {
     e.preventDefault();
-    // setDisabled(true);
-    const hash = e.target.hash.value.toString();
-    const bookmarks = await jsonExtractor(e.target[0].files[0]);
+    setDisabled(true);
+    const key = e.target.key.value.toString();
+    const file = e.target[0].files[0];
+    const bookmarks = await fileDataExtractor(file);
     const input = {
       bookmarks: bookmarks,
-      hash: hash,
+      key: key,
     };
-    try {
-      daemon.encrypt(input);
-    } catch (err) {
-      setErrMSG(err);
-      document.getElementById("errDialog").showModal();
+    if (file.type === "application/json") {
+      try {
+        daemon.encrypt(input);
+      } catch (err) {
+        setErrMSG(err);
+        document.getElementById("errDialog").showModal();
+      }
+    } else if (file.type === "text/plain" || file.type === "") {
+      try {
+        daemon.decrypt(input);
+      } catch (err) {
+        setErrMSG(err);
+        document.getElementById("errDialog").showModal();
+      }
     }
   }
-
-  function jsonExtractor(data) {
-    const JSONReader = new FileReader();
-    JSONReader.readAsText(data, "UTF-8");
-    return new Promise((resolve) => {
-      JSONReader.onload = (e) => {
-        resolve(JSON.parse(e.target.result));
-      };
-    });
+  function fileDataExtractor(data) {
+    const fileDataReader = new FileReader();
+    fileDataReader.readAsText(data, "UTF-8");
+    if (data.type === "application/json") {
+      return new Promise((resolve) => {
+        fileDataReader.onload = (e) => {
+          const jsonParser = JSON.parse(e.target.result);
+          resolve(JSON.stringify(jsonParser));
+        };
+      });
+    } else if (data.type === "text/plain" || data.type === "") {
+      return new Promise((resolve) => {
+        fileDataReader.onload = (e) => {
+          resolve(e.target.result);
+        };
+      });
+    } else {
+      setErrMSG("unsupported file type");
+      return "";
+    }
   }
 
   return (
@@ -60,10 +81,10 @@ export default function Uploader(props) {
               required
               type="file"
             />
-            <label> hash </label>
+            <label> key </label>
             <input
               disabled={disabled}
-              name="hash"
+              name="key"
               placeholder="********"
               required
               type="password"
