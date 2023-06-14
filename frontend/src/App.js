@@ -1,22 +1,33 @@
 import "./App.scss";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ApiDaemon } from "./apiDaemon";
 
 import Bookmarks from "./components/bookmarks";
-import Uploader from "./components/uploader"
+import Uploader from "./components/uploader";
 
 function App() {
   const daemon = new ApiDaemon();
+  const [bookmarks, setBookmarks] = useState("");
 
-  const [authToken, setAuthToken] = useState(
-    window.localStorage.getItem("authToken")
-  );
+  useEffect(() => {
+    let cookies = [];
+    if (document.cookie === "") {
+      return;
+    } else {
+      cookies = document.cookie.split("; ");
+    }
+    if (!cookies.includes("bookmarksStorage=bookmarksStorage")) {
+      localStorage.removeItem("bookmarks");
+    } else if (bookmarks === "") {
+      setBookmarks(JSON.parse(localStorage.getItem("bookmarks")));
+    }
+  }, []);
 
-  return authToken ? (
+  return bookmarks ? (
     <>
-      <Bookmarks daemon={daemon} />
+      <Bookmarks bookmarks={bookmarks} daemon={daemon} />
     </>
   ) : (
     <>
