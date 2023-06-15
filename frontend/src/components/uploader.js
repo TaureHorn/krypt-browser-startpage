@@ -28,6 +28,9 @@ export default function Uploader(props) {
     } else if (file.type === "text/plain" || file.type === "") {
       try {
         daemon.decrypt(input);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       } catch (err) {
         setErrMSG(err);
         document.getElementById("errDialog").showModal();
@@ -70,7 +73,6 @@ export default function Uploader(props) {
         </button>
       </dialog>
       {/*////////////////////////////////////////////////////////////////////////////////////////////*/}
-      <div className="contCenter">
         <div className="textCenter">
           <h1>{message}</h1>
           <form onSubmit={(e) => dataPusher(e)}>
@@ -94,7 +96,6 @@ export default function Uploader(props) {
             </button>
           </form>
         </div>
-      </div>
     </>
   );
 }
