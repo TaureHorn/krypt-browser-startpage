@@ -1,8 +1,8 @@
-import { randomString } from "../functions/randomString.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Bookmarks(props) {
+  const navigate = useNavigate();
   const display = Object.entries(props.bookmarks);
-  console.log(display);
 
   function manualBookmarkDelete() {
     document.cookie = "bookmarksStorage=removed";
@@ -29,13 +29,14 @@ export default function Bookmarks(props) {
               </>
             );
           })}
+          <div id="dataInteractionButtons" className="dataButtons"></div>
         </div>
-        <div id="dataInteractionButtons" className="dataButtons">
-          <button> encrypt data to file</button>
-          <button onClick={() => manualBookmarkDelete()}>
-            remove data from memory
-          </button>
-        </div>
+        <button className="widebutton" onClick={() => navigate("/encrypt")}>
+          encrypt new file
+        </button>
+        <button className="widebutton" onClick={() => manualBookmarkDelete()}>
+          remove data from memory
+        </button>
       </div>
     </>
   );
