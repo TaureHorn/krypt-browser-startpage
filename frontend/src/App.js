@@ -1,10 +1,12 @@
 import "./App.scss";
 
 import { useEffect, useState } from "react";
+import { Route, Routes, Router } from "react-router-dom";
 
 import { ApiDaemon } from "./apiDaemon";
 
 import Bookmarks from "./components/bookmarks";
+import Encrypter from "./components/encrypter";
 import Uploader from "./components/uploader";
 
 function App() {
@@ -23,11 +25,17 @@ function App() {
     } else if (bookmarks === "") {
       setBookmarks(JSON.parse(localStorage.getItem("bookmarks")));
     }
-  },[]);
+  }, []);
 
   return bookmarks ? (
     <>
-      <Bookmarks bookmarks={bookmarks} daemon={daemon} />
+      <Routes>
+        <Route
+          path="/"
+          element={<Bookmarks bookmarks={bookmarks} daemon={daemon} />}
+        />
+        <Route path="/encrypt" element={<Encrypter daemon={daemon} />} />
+      </Routes>
     </>
   ) : (
     <>

@@ -1,101 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { fileDataExtractor } from "../functions/fileDataHandler";
+
+import FileForm from "./fileForm";
 
 export default function Uploader(props) {
-  const daemon = props.daemon;
-  const [message, setMessage] = useState(
-    "Upload your bookmarks to display them"
-  );
-  const [disabled, setDisabled] = useState(false);
-  const [errMSG, setErrMSG] = useState("");
+  const [message, setMessage] = useState("decrypt bookmark file");
+  const [formData, setFormData] = useState("");
 
-  async function dataPusher(e) {
-    e.preventDefault();
-    setDisabled(true);
-    const key = e.target.key.value.toString();
-    const file = e.target[0].files[0];
-    const bookmarks = await fileDataExtractor(file);
-    const input = {
-      bookmarks: bookmarks,
-      key: key,
+  async function dataUploader() {
+    const bookmarks = await fileDataExtractor(formData[0].files[0]);
+    const extractedFormData = {
+      file: bookmarks,
+      algorithm: formData.encryptionAlgorithm.value,
+      key: formData.key.value,
     };
-    if (file.type === "application/json") {
-      try {
-        daemon.encrypt(input);
-      } catch (err) {
-        setErrMSG(err);
-        document.getElementById("errDialog").showModal();
-      }
-    } else if (file.type === "text/plain" || file.type === "") {
-      try {
-        daemon.decrypt(input);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-      } catch (err) {
-        setErrMSG(err);
-        document.getElementById("errDialog").showModal();
-      }
+    try {
+      props.daemon.decrypt(extractedFormData);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+      setMessage(err);
     }
   }
-  function fileDataExtractor(data) {
-    const fileDataReader = new FileReader();
-    fileDataReader.readAsText(data, "UTF-8");
-    if (data.type === "application/json") {
-      return new Promise((resolve) => {
-        fileDataReader.onload = (e) => {
-          const jsonParser = JSON.parse(e.target.result);
-          resolve(JSON.stringify(jsonParser));
-        };
-      });
-    } else if (data.type === "text/plain" || data.type === "") {
-      return new Promise((resolve) => {
-        fileDataReader.onload = (e) => {
-          resolve(e.target.result);
-        };
-      });
-    } else {
-      setErrMSG("unsupported file type");
-      return "";
+
+  useEffect(() => {
+    if (formData != "") {
+      dataUploader();
     }
-  }
+  }, [formData]);
 
   return (
     <>
-      <dialog id="errDialog" open={false}>
-        {errMSG}
-        <button
-          onClick={() => {
-            setErrMSG("");
-            document.getElementById("errDialog").close();
-          }}
-        >
-          x
-        </button>
-      </dialog>
-      {/*////////////////////////////////////////////////////////////////////////////////////////////*/}
-        <div className="textCenter">
-          <h1>{message}</h1>
-          <form onSubmit={(e) => dataPusher(e)}>
-            <label> file </label>
-            <input
-              disabled={disabled}
-              name="bookmarksFile"
-              required
-              type="file"
-            />
-            <label> key </label>
-            <input
-              disabled={disabled}
-              name="key"
-              placeholder="********"
-              required
-              type="password"
-            />
-            <button style={{ display: "none" }} type="submit">
-              o
-            </button>
-          </form>
-        </div>
+      <div className="textCenter">
+        <h1>{message}</h1>
+        <FileForm formData={(formData) => setFormData(formData)} />
+      </div>
     </>
   );
 }
