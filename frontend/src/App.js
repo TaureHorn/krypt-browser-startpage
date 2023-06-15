@@ -23,7 +23,7 @@ function App() {
     } else if (bookmarks === "") {
       setBookmarks(JSON.parse(localStorage.getItem("bookmarks")));
     }
-  }, []);
+  },[]);
 
   return bookmarks ? (
     <>
