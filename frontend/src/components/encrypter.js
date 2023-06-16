@@ -9,9 +9,11 @@ export default function Encrypter(props) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("encrypt a file");
   const [formData, setFormData] = useState("");
+    const [formDisabled, setFormDisabled] = useState(false)
 
   const [fileReceived, setFileReceived] = useState(false);
   const [file, setFile] = useState("");
+  const [selectedAlgorithm, saveSelectedAlgorithm] = useState("");
 
   async function dataUploader() {
     const bookmarks = await fileDataExtractor(formData[0].files[0]);
@@ -20,6 +22,7 @@ export default function Encrypter(props) {
       algorithm: formData.encryptionAlgorithm.value,
       key: formData.key.value,
     };
+    saveSelectedAlgorithm(extractedFormData.algorithm);
     try {
       props.daemon.encrypt(extractedFormData).then((response) => {
         setFile(response);
@@ -30,24 +33,27 @@ export default function Encrypter(props) {
     }
   }
 
-    async function fileDownloader() {
-    if (file != "") {
-      props.daemon.downloader(file, "links");
+  async function fileDownloader() {
+    if (file !== "") {
+      props.daemon.downloader(file, "links", selectedAlgorithm);
     }
   }
 
   useEffect(() => {
-    if (formData != "") {
+    if (formData !== "") {
       dataUploader();
     }
   }, [formData]);
+
   return fileReceived === false ? (
     <>
       <div className="textCenter">
         <h1>{message}</h1>
-        <FileForm formData={(formData) => setFormData(formData)} />
-        <button className="widebutton" onClick={() => navigate("/")}>
-          bookmarks
+        <FileForm disabled={formDisabled} formData={(formData) => setFormData(formData)} />
+      </div>
+      <div className="dataButtons">
+        <button className="lowerButton" onClick={() => navigate("/")}>
+          back to bookmarks
         </button>
       </div>
     </>
@@ -56,11 +62,16 @@ export default function Encrypter(props) {
       <div className="textCenter">
         <h1>file encrypted successfully</h1>
         <p>"{file.slice(0, 64)}..."</p>
-        <button className="widebutton" onClick={() => fileDownloader()}>
+        <button className="wideButton" onClick={() => fileDownloader()}>
           download encrypted file
         </button>
-        <button className="widebutton" onClick={() => navigate("/")}>
-          bookmarks
+      </div>
+      <div className="dataButtons">
+        <button className="lowerButton" onClick={() => navigate("/")}>
+          back to bookmarks
+        </button>
+        <button className="lowerButton" onClick={() => setFileReceived(false)}>
+          encrypt another file
         </button>
       </div>
     </>

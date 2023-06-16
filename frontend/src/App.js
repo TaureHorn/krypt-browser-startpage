@@ -1,7 +1,7 @@
 import "./App.scss";
 
 import { useEffect, useState } from "react";
-import { Route, Routes, Router } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { ApiDaemon } from "./apiDaemon";
 
@@ -23,7 +23,12 @@ function App() {
     if (!cookies.includes("bookmarksStorage=bookmarksStorage")) {
       localStorage.removeItem("bookmarks");
     } else if (bookmarks === "") {
-      setBookmarks(JSON.parse(localStorage.getItem("bookmarks")));
+      try {
+        setBookmarks(JSON.parse(localStorage.getItem("bookmarks")));
+      } catch (err) {
+        console.log("error");
+        setBookmarks(err);
+      }
     }
   }, []);
 
@@ -32,14 +37,23 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Bookmarks bookmarks={bookmarks} daemon={daemon} />}
+          element={
+            <Bookmarks
+              bookmarks={bookmarks}
+              removeBookmarks={(bookmarks) => setBookmarks(bookmarks)}
+              daemon={daemon}
+            />
+          }
         />
         <Route path="/encrypt" element={<Encrypter daemon={daemon} />} />
       </Routes>
     </>
   ) : (
     <>
-      <Uploader daemon={daemon} />
+      <Uploader
+        bookmarks={(bookmarks) => setBookmarks(bookmarks)}
+        daemon={daemon}
+      />
     </>
   );
 }

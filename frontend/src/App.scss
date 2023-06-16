@@ -1,11 +1,14 @@
 $col: #aaaaaa;
+$colOp: rgba(255, 255, 255, 0.2);
+$colOpHi: rgba(255, 255, 255, 0.33);
 $colHi: #ffffff;
 $border: 1px solid $col;
 $borderHi: 1px solid $colHi;
+$fontSize: 16pt;
 
 body {
-  background-image: url("./resources/background_dotted-halftone.jpg");
-  background-position: center;
+  background-image: url("./resources/background_dotted-two-skulls.jpg");
+  // background-position: center;
   background-repeat: repeat;
 }
 
@@ -24,8 +27,13 @@ label,
 textarea,
 select,
 button {
+  font-size: $fontSize;
   color: $col;
   font-family: monospace, Courier;
+}
+h1 {
+  font-size: calc($fontSize * 1.5);
+  text-transform: uppercase;
 }
 input,
 textarea,
@@ -36,6 +44,8 @@ button {
 }
 input:hover,
 input:focus,
+select:hover,
+select:focus,
 textarea:hover,
 textarea:focus,
 button:hover,
@@ -43,6 +53,11 @@ button:focus {
   color: $colHi;
   border: $borderHi;
   outline: none;
+}
+button:active {
+  background-color: $colOp;
+  border: $border;
+  outline: $borderHi;
 }
 .textCenter {
   left: 50%;
@@ -57,43 +72,75 @@ button:focus {
   margin-top: 5%;
 }
 .formInputs {
-    align-items:center;
-    display:flex;
-    justify-content: space-between;
-    transform: translate(2%);
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
 }
 label {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 /////////////// BOOKMARKS ///////////////////////////////////////////////
 .linksBox {
   display: flex;
-  gap: 10%;
+  gap: 5%;
   margin: 5%;
+  padding: 2%;
   text-align: left;
 }
+.headerSubsection {
+  outline: $border;
+}
 .linkHeader {
-  font-size: 22pt;
+  background-color: $colOpHi;
+  color: $col;
   font-weight: 800;
+  outline: $borderHi;
+  padding: 5px;
+  text-align: center;
   text-transform: uppercase;
 }
 .link {
   text-decoration: none;
+  transition: 0.15s linear;
 }
 .link:hover p,
 .link:active p {
+  background-color: $colOp;
   color: $colHi !important;
-  text-decoration: underline;
+  outline: $borderHi;
 }
 .dataButtons {
+  bottom: 0%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 4%;
+  left: 50%;
+  margin: 0%;
+  position: absolute;
+  transform: translate(-50%, 0%);
+  width: 100%;
 }
 ///////////////  ///////////////////////////////////////////////
-.widebutton {
-  margin: 2%;
+.wideButton {
   padding: 1%;
+}
+.wideButton,
+.lowerButton {
+  margin-top: 2%;
   width: 100%;
+}
+.wideButton:hover {
+  background-color: $colOp;
+}
+.lowerButton {
+  background-color: $colOp;
+  padding: 10px;
+}
+.lowerButton:hover {
+  background-color: $colOpHi;
+  outline: $borderHi;
+}
+.wideButton:active,
+.lowerButton:active {
+  background-color: $col;
+  outline: $borderHi;
 }
