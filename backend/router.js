@@ -6,7 +6,6 @@ const crypto = require("./controllers/crypto")
 
 router.post("/auth", auth.authenticate)
 
-router.post("/encrypt", crypto.encrypt)
-router.post("/decrypt", crypto.decrypt)
+router.post("/crypto", crypto.crypto)
 
 module.exports = router
