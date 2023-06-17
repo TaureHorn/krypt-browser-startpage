@@ -1,10 +1,10 @@
-$col: #aaaaaa;
-$colOp: rgba(255, 255, 255, 0.2);
-$colOpHi: rgba(255, 255, 255, 0.33);
-$colHi: #ffffff;
+$col: #888888;
+$colOp: rgba(255, 255, 255, 0.1);
+$colOpHi: rgba(255, 255, 255, 0.25);
+$colHi: #aaaaaa;
 $border: 1px solid $col;
 $borderHi: 1px solid $colHi;
-$fontSize: 16pt;
+$fontSize: 14pt;
 
 body {
   background-image: url("./resources/background_dotted-two-skulls.jpg");
@@ -37,10 +37,13 @@ h1 {
 }
 input,
 textarea,
-select,
-button {
+select {
   background: none;
   border: $border;
+}
+button {
+  background: none;
+  border: none;
 }
 input:hover,
 input:focus,
@@ -51,7 +54,7 @@ textarea:focus,
 button:hover,
 button:focus {
   color: $colHi;
-  border: $borderHi;
+  border: $border;
   outline: none;
 }
 button:active {
@@ -64,7 +67,7 @@ button:active {
   position: absolute;
   text-align: center;
   top: 50%;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, -60%);
   min-width: 30%;
 }
 /////////////// FORMS ///////////////////////////////////////////////
@@ -87,14 +90,16 @@ label {
   margin: 5%;
   padding: 2%;
   text-align: left;
+  transform: translate(-20%, -0%)
 }
 .headerSubsection {
+    min-width: 25%;
   outline: $border;
 }
 .linkHeader {
-  background-color: $colOpHi;
   color: $col;
   font-weight: 800;
+  margin: 0;
   outline: $borderHi;
   padding: 5px;
   text-align: center;
@@ -121,6 +126,7 @@ label {
 }
 ///////////////  ///////////////////////////////////////////////
 .wideButton {
+  border: $border;
   padding: 1%;
 }
 .wideButton,
@@ -132,12 +138,11 @@ label {
   background-color: $colOp;
 }
 .lowerButton {
-  background-color: $colOp;
   padding: 10px;
 }
 .lowerButton:hover {
-  background-color: $colOpHi;
-  outline: $borderHi;
+  background-color: $colOp;
+  outline: $border;
 }
 .wideButton:active,
 .lowerButton:active {

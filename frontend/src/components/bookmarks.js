@@ -31,9 +31,9 @@ export default function Bookmarks(props) {
           {display.map((header) => {
             return (
               <>
+                  <div className="headerSubsection">
                 <div key={header[0]}>
                   <p className="linkHeader">{header[0]}</p>
-                  <div className="headerSubsection">
                     {header[1].map((entry) => {
                       return (
                         <a key={entry.name} href={entry.url} className="link">
