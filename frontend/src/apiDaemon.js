@@ -1,26 +1,42 @@
 import axios from "axios";
 
+import { isObjectEmpty } from "./functions/isObjectEmpty";
+
 const URL = "http://localhost:3334";
 const FileSaver = require("file-saver");
 
 export class ApiDaemon {
-  async decrypt(obj) {
-    const method = "decrypt";
-    const decryptAttempt = await axios.post(`${URL}/crypto`, { obj, method });
-    const dataChecker = Object.keys(decryptAttempt.data).length > 0;
-    if (decryptAttempt.status === "200" && dataChecker === true) {
-      this.dataPusher(decryptAttempt);
-      return decryptAttempt.data;
+  async decrypt(algorithm, file, key) {
+    let decrypt = "";
+    try {
+      decrypt = await axios.post(`${URL}/crypto/decrypt`, {
+        algorithm,
+        file,
+        key,
+      });
+    } catch (error) {
+      decrypt = error.message;
+    }
+    const dataChecker = isObjectEmpty(decrypt.data);
+    if (decrypt.status === 200 && dataChecker === false) {
+      this.dataPusher(decrypt);
+      return decrypt.data;
     } else {
-        console.log(decryptAttempt)
-      return decryptAttempt.data;
+      return decrypt;
     }
   }
 
-  async encrypt(obj) {
-    const method = "encrypt";
-    const encryptAttempt = await axios.post(`${URL}/crypto`, { obj, method });
-    return encryptAttempt.data;
+  async encrypt(algorithm, file, key) {
+    try {
+      const encryptAttempt = await axios.post(`${URL}/crypto/encrypt`, {
+        algorithm,
+        file,
+        key,
+      });
+      return encryptAttempt.data;
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async downloader(file, name, algorithm) {
@@ -33,6 +49,6 @@ export class ApiDaemon {
     localStorage.setItem("bookmarks", JSON.stringify(data.data));
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 7);
-    document.cookie = `bookmarksStorage=bookmarksStorage; expires= ${expiryDate.toUTCString()}`;
+    document.cookie = `bookmarksStorage=bookmarksStorage; expires= ${expiryDate.toUTCString()}; sameSite=Strict`;
   }
 }

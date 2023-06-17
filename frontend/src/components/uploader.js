@@ -10,43 +10,53 @@ export default function Uploader(props) {
   const [formData, setFormData] = useState("");
   const [formDisabled, setFormDisabled] = useState(false);
 
-  async function dataUploader() {
+  async function dataUploader(formData) {
     setFormDisabled(true);
-    const bookmarks = await fileDataExtractor(formData[0].files[0]);
-    const extractedFormData = {
-      file: bookmarks,
-      algorithm: formData.encryptionAlgorithm.value,
-      key: formData.key.value,
-    };
-    try {
-      props.daemon.decrypt(extractedFormData).then((response) => {
-        if (isObjectEmpty(response) === false) {
-          props.bookmarks(response);
-        } else {
-            setFormDisabled(false)
-            setMessage("incorrect key")
-        }
-      });
-    } catch (err) {
-      setMessage(err);
+    const file = formData[0].files[0];
+    const bookmarks = await fileDataExtractor(file);
+    if (!bookmarks || file.type !== "") {
+      formReset("incorrect file type");
+      return;
     }
+    const algorithm = formData.encryptionAlgorithm.value;
+    try {
+      props.daemon
+        .decrypt(algorithm, bookmarks, formData.key.value)
+        .then((response) => {
+          console.log(response);
+          if (isObjectEmpty(response) === false && !response.config) {
+            props.bookmarks(response);
+          } else {
+            formReset("");
+          }
+          if (typeof response === "string") {
+            setMessage(response);
+          } else if (isObjectEmpty(response.data)) {
+            setMessage("incorrect key / invalid file");
+          }
+        });
+    } catch (err) {
+      formReset(err);
+    }
+  }
+  function formReset(message) {
+    setFormDisabled(false);
+    setFormData("");
+    setMessage(message);
   }
 
   useEffect(() => {
-    if (formData !== "") {
-      dataUploader();
+    if (formData) {
+      dataUploader(formData);
     }
   }, [formData]);
-
   return (
-    <>
-      <div className="textCenter">
-        <h1>{message}</h1>
-        <FileForm
-          disabled={formDisabled}
-          formData={(formData) => setFormData(formData)}
-        />
-      </div>
-    </>
+    <div className="textCenter">
+      <h1>{message}</h1>
+      <FileForm
+        disabled={formDisabled}
+        formData={(formData) => setFormData(formData)}
+      />
+    </div>
   );
 }

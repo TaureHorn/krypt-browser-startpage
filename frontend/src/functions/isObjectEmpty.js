@@ -1,6 +1,6 @@
 export function isObjectEmpty(obj){
     if (typeof obj !== "object"){
-        return false
+        return null
     } else {
         return !Object.keys(obj).length > 0;
     }
