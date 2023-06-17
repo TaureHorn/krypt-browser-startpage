@@ -15,7 +15,7 @@ export default function Bookmarks(props) {
   }, [display]);
 
   function manualBookmarkDelete() {
-    document.cookie = "bookmarksStorage=removed";
+    document.cookie = "bookmarksStorage=removed; sameSite=Strict";
       props.removeBookmarks("")
   }
 

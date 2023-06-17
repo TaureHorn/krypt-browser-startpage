@@ -7,26 +7,29 @@ import FileForm from "./fileForm";
 
 export default function Encrypter(props) {
   const navigate = useNavigate();
+
   const [message, setMessage] = useState("encrypt a file");
   const [formData, setFormData] = useState("");
-    const [formDisabled, setFormDisabled] = useState(false)
 
   const [fileReceived, setFileReceived] = useState(false);
   const [file, setFile] = useState("");
   const [selectedAlgorithm, saveSelectedAlgorithm] = useState("");
 
   async function dataUploader() {
-    const bookmarks = await fileDataExtractor(formData[0].files[0]);
-    const extractedFormData = {
-      file: bookmarks,
-      algorithm: formData.encryptionAlgorithm.value,
-      key: formData.key.value,
-    };
-    saveSelectedAlgorithm(extractedFormData.algorithm);
+    const file = await fileDataExtractor(formData[0].files[0]);
+    if (!file) {
+      setMessage("incorrect file type");
+      setFormData("");
+      return;
+    }
+    const algorithm = formData.encryptionAlgorithm.value;
+    saveSelectedAlgorithm(algorithm);
     try {
-      props.daemon.encrypt(extractedFormData).then((response) => {
-        setFile(response);
-      });
+      props.daemon
+        .encrypt(algorithm, file, formData.key.value)
+        .then((response) => {
+          setFile(response);
+        });
       setFileReceived(true);
     } catch (err) {
       setMessage(err);
@@ -40,8 +43,8 @@ export default function Encrypter(props) {
   }
 
   useEffect(() => {
-    if (formData !== "") {
-      dataUploader();
+    if (formData) {
+      dataUploader(formData);
     }
   }, [formData]);
 
@@ -49,7 +52,7 @@ export default function Encrypter(props) {
     <>
       <div className="textCenter">
         <h1>{message}</h1>
-        <FileForm disabled={formDisabled} formData={(formData) => setFormData(formData)} />
+        <FileForm formData={(formData) => setFormData(formData)} />
       </div>
       <div className="dataButtons">
         <button className="lowerButton" onClick={() => navigate("/")}>
