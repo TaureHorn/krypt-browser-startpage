@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { ApiDaemon } from "./apiDaemon";
 
-import Bookmarks from "./components/bookmarks";
+import Bookmarks from "./components/bookmarksPage";
 import Encrypter from "./components/encrypter";
 import Uploader from "./components/uploader";
 
@@ -32,6 +32,17 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (bookmarks === "" && document.cooke === "") {
+      return;
+    }
+    const str = JSON.stringify(bookmarks);
+    if (str === localStorage.getItem("bookmarks")) {
+      return;
+    }
+      localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+  }, [bookmarks]);
+
   return bookmarks ? (
     <>
       <Routes>
@@ -40,8 +51,8 @@ function App() {
           element={
             <Bookmarks
               bookmarks={bookmarks}
-              removeBookmarks={(bookmarks) => setBookmarks(bookmarks)}
               daemon={daemon}
+              updateBookmarks={(bookmarks) => setBookmarks(bookmarks)}
             />
           }
         />

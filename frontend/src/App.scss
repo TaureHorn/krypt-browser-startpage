@@ -2,12 +2,15 @@ $col: #888888;
 $colOp: rgba(255, 255, 255, 0.1);
 $colOpHi: rgba(255, 255, 255, 0.25);
 $colHi: #aaaaaa;
+$darkCol: #222222;
+$darkColOp: rgba(0,0,0,.5);
 $border: 1px solid $col;
+$borderDash: 1px dashed $col;
 $borderHi: 1px solid $colHi;
 $fontSize: 14pt;
 
 body {
-  background-image: url("./resources/background_dotted-two-skulls.jpg");
+  background-image: url("./resources/background_dotted-halftone.jpg");
   // background-position: center;
   background-repeat: repeat;
 }
@@ -70,6 +73,9 @@ button:active {
   transform: translate(-50%, -60%);
   min-width: 30%;
 }
+.border {
+  border: $border;
+}
 /////////////// FORMS ///////////////////////////////////////////////
 .form {
   margin-top: 5%;
@@ -90,22 +96,32 @@ label {
   margin: 5%;
   padding: 2%;
   text-align: left;
-  transform: translate(-20%, -0%)
+  transform: translate(-20%, -0%);
 }
 .headerSubsection {
-    min-width: 25%;
-  outline: $border;
+  min-width: 25%;
+  outline: $borderDash;
+}
+.headerBox {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  outline: $borderHi;
+  padding: 5px;
 }
 .linkHeader {
   color: $col;
   font-weight: 800;
   margin: 0;
-  outline: $borderHi;
-  padding: 5px;
   text-align: center;
   text-transform: uppercase;
 }
+.icon {
+  filter: invert(60%);
+}
 .link {
+  margin: 0%;
+  padding: 0%;
   text-decoration: none;
   transition: 0.15s linear;
 }
@@ -114,6 +130,9 @@ label {
   background-color: $colOp;
   color: $colHi !important;
   outline: $borderHi;
+}
+.link:active {
+  background-color: #ffffff !important;
 }
 .dataButtons {
   bottom: 0%;
@@ -124,7 +143,16 @@ label {
   transform: translate(-50%, 0%);
   width: 100%;
 }
-///////////////  ///////////////////////////////////////////////
+////////////////////// DIALOG ////////////////////////////////////////
+.dialog {
+  background-color: $darkCol;
+  border: $border;
+
+}
+.dialog::backdrop {
+    background-color: $darkColOp;
+}
+////////////////////// BUTTONS ////////////////////////////////////////
 .wideButton {
   border: $border;
   padding: 1%;
@@ -142,7 +170,7 @@ label {
 }
 .lowerButton:hover {
   background-color: $colOp;
-  outline: $border;
+  border: $borderDash;
 }
 .wideButton:active,
 .lowerButton:active {
