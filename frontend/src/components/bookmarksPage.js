@@ -49,7 +49,6 @@ export default function Bookmarks(props) {
     document.getElementById("newBookmarkForm").reset();
     document.getElementById(modalID).close();
   }
-
   function manualBookmarkDelete() {
     document.cookie = "bookmarksStorage=removed; sameSite=Strict";
     props.updateBookmarks("");
@@ -83,21 +82,29 @@ export default function Bookmarks(props) {
         <div className="linksBox">{dataMap}</div>
       </div>
       <div id="dataInteractionButtons" className="dataButtons">
-        {/* TODO
-      enable encryption of current bookmarsk, 
-      autofill bookmarks string into form with ability to select algorithm and input secret key
-      */}
-        <button className="lowerButton" onClick={() => navigate("/encrypt")}>
+        <button
+          className="lowerButton"
+          onClick={() => {
+            props.presetFile(true);
+            navigate("encrypt");
+          }}
+        >
           encrypt current bookmarks
         </button>
-        <button className="lowerButton" onClick={() => navigate("/encrypt")}>
+        <button
+          className="lowerButton"
+          onClick={() => {
+            props.presetFile(false);
+            navigate("/encrypt");
+          }}
+        >
           encrypt new file
-        </button>
-        <button className="lowerButton" onClick={() => manualBookmarkDelete()}>
-          remove data from memory
         </button>
         <button className="lowerButton" onClick={() => jsonDownloader()}>
           download unencrypted json
+        </button>
+        <button className="lowerButton" onClick={() => manualBookmarkDelete()}>
+          remove data from memory
         </button>
       </div>
     </>
