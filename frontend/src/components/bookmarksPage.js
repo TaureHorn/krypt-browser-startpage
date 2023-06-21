@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { isObjectEmpty } from "../functions/isObjectEmpty";
 import { randomString } from "../functions/randomString";
 
 import BookmarkMap from "./bookmarkMap";
@@ -10,6 +11,29 @@ export default function Bookmarks(props) {
   // modal ///////////////////////////////////////////////////////////////////////////
   const modalID = "addNewBookmarkModal";
   const [modalSection, setModalSection] = useState("");
+
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [deletion, markForDeletion] = useState("");
+  function toggleDeleteMode() {
+    const e = document.querySelectorAll(".deleteButton");
+    if (deleteMode === false) {
+      setDeleteMode(true);
+      e.forEach((a) => (a.style.display = "block"));
+    } else if (deleteMode === true) {
+      setDeleteMode(false);
+      e.forEach((a) => (a.style.display = "none"));
+    }
+  }
+  function deleteEntry() {
+    display[deletion.category][1].splice(deletion.position, 1);
+    updateDataMap(dataMapper());
+    props.updateBookmarks(Object.fromEntries(display));
+  }
+  useEffect(() => {
+    if (isObjectEmpty(deletion) === false) {
+      deleteEntry();
+    }
+  }, [deletion]);
   // data ///////////////////////////////////////////////////////////////////////////
   const display = Object.entries(props.bookmarks);
   const [dataMap, updateDataMap] = useState(dataMapper());
@@ -28,9 +52,11 @@ export default function Bookmarks(props) {
     return display.map((header, index) => {
       return (
         <BookmarkMap
-          key={randomString(4)}
           bookmarks={header}
+          deleteMode={deleteMode}
+          deletion={(deletion) => markForDeletion(deletion)}
           index={index}
+          key={randomString(4)}
           modalID={modalID}
           modalSection={(modalSection) => setModalSection(modalSection)}
         />
@@ -58,7 +84,7 @@ export default function Bookmarks(props) {
     const data = JSON.stringify(props.bookmarks);
     props.daemon.downloader(data, "links", "json");
   }
-  return validData === true ? (
+  return validData ? (
     <>
       {/*/////////////// MODAL /////////////////////////////////////////////////////*/}
       <dialog closed="true" id={modalID} className="dialog">
@@ -78,6 +104,20 @@ export default function Bookmarks(props) {
         </form>
       </dialog>
       {/*/////////////// MAP /////////////////////////////////////////////////////*/}
+      <div id="alerter">
+        {deleteMode ? (
+          <>
+            <p
+              className="alerter border padding"
+              style={{ fontWeight: "bold" }}
+            >
+              DELETE MODE ENABLED:
+            </p>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
       <div className="textCenter">
         <div className="linksBox">{dataMap}</div>
       </div>
@@ -99,6 +139,9 @@ export default function Bookmarks(props) {
           }}
         >
           encrypt new file
+        </button>
+        <button className="lowerButton" onClick={() => toggleDeleteMode()}>
+          {deleteMode ? <>disable</> : <>enable</>} delete mode
         </button>
         <button className="lowerButton" onClick={() => jsonDownloader()}>
           download unencrypted json

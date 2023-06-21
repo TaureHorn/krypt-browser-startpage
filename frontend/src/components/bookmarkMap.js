@@ -1,5 +1,7 @@
 import { randomString } from "../functions/randomString";
+
 import Plus from "../resources/plus.svg";
+import Delete from "../resources/favicon.png";
 
 export default function BookmarkMap(props) {
   const header = props.bookmarks;
@@ -18,7 +20,7 @@ export default function BookmarkMap(props) {
     document.getElementById(props.modalID).showModal();
     props.modalSection(props.index);
   }
-     
+
   return (
     <>
       <div className="headerSubsection">
@@ -40,13 +42,29 @@ export default function BookmarkMap(props) {
               width="24px"
             />
           </div>
-          {header[1].map((entry) => {
+          {header[1].map((entry, index) => {
             return (
-              <a key={entry.name} href={entry.url} className="link">
-                <p style={{ padding: "10px" }} className="link">
-                  {entry.name}
-                </p>
-              </a>
+              <div key={randomString(4)} className="linkEntry">
+                <img
+                  src={Delete}
+                  alt="delete entry button"
+                  className="deleteButton"
+                  onClick={() =>
+                    props.deletion({ category: props.index, position: index })
+                  }
+                  style={
+                    props.deleteMode
+                      ? { display: "block" }
+                      : { display: "none" }
+                  }
+                  title="delete entry"
+                />
+                <a key={entry.name} href={entry.url} className="link">
+                  <p style={{ padding: "10px" }} className="link">
+                    {entry.name}
+                  </p>
+                </a>
+              </div>
             );
           })}
         </div>

@@ -3,11 +3,12 @@ $colOp: rgba(255, 255, 255, 0.1);
 $colOpHi: rgba(255, 255, 255, 0.25);
 $colHi: #aaaaaa;
 $darkCol: #222222;
-$darkColOp: rgba(0,0,0,.5);
+$darkColOp: rgba(0, 0, 0, 0.5);
 $border: 1px solid $col;
 $borderDash: 1px dashed $col;
 $borderHi: 1px solid $colHi;
 $fontSize: 14pt;
+$padding: 10px;
 
 body {
   background-image: url("./resources/background_dotted-halftone.jpg");
@@ -65,16 +66,26 @@ button:active {
   border: $border;
   outline: $borderHi;
 }
+.alerter,
 .textCenter {
   left: 50%;
   position: absolute;
   text-align: center;
+  transform: translate(-58%, -70%);
+}
+.alerter {
+  font-size: calc($fontSize * 2);
+  top: 10%;
+}
+.textCenter {
   top: 50%;
-  transform: translate(-50%, -60%);
   min-width: 30%;
 }
 .border {
   border: $border;
+}
+.padding {
+  padding: $padding !important;
 }
 /////////////// FORMS ///////////////////////////////////////////////
 .form {
@@ -92,7 +103,7 @@ label {
 /////////////// BOOKMARKS ///////////////////////////////////////////////
 .linksBox {
   display: flex;
-  gap: 5%;
+  gap: 10%;
   margin: 5%;
   padding: 2%;
   text-align: left;
@@ -119,20 +130,34 @@ label {
 .icon {
   filter: invert(60%);
 }
+.linkEntry {
+  align-items: center;
+  display: flex;
+}
+.linkEntry:hover,
+.linkEntry:active {
+  background-color: $colOp;
+  outline: $borderHi;
+}
 .link {
   margin: 0%;
   padding: 0%;
   text-decoration: none;
   transition: 0.15s linear;
 }
-.link:hover p,
-.link:active p {
-  background-color: $colOp;
+.linkEntry:hover p,
+.linkEntry:active p {
   color: $colHi !important;
-  outline: $borderHi;
 }
 .link:active {
   background-color: #ffffff !important;
+}
+.deleteButton {
+    display: none;
+  height: 24px;
+  position: absolute;
+  transform: translate(-29px, 2px);
+  width: 24px;
 }
 .dataButtons {
   bottom: 0%;
@@ -147,10 +172,9 @@ label {
 .dialog {
   background-color: $darkCol;
   border: $border;
-
 }
 .dialog::backdrop {
-    background-color: $darkColOp;
+  background-color: $darkColOp;
 }
 ////////////////////// BUTTONS ////////////////////////////////////////
 .wideButton {
