@@ -12,6 +12,7 @@ import Uploader from "./components/uploader";
 function App() {
   const daemon = new ApiDaemon();
   const [bookmarks, setBookmarks] = useState("");
+  const [preloadBookmarksForEncryption, setBookmarkPreload] = useState(false);
 
   useEffect(() => {
     let cookies = [];
@@ -40,7 +41,7 @@ function App() {
     if (str === localStorage.getItem("bookmarks")) {
       return;
     }
-      localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   }, [bookmarks]);
 
   return bookmarks ? (
@@ -52,11 +53,20 @@ function App() {
             <Bookmarks
               bookmarks={bookmarks}
               daemon={daemon}
+              presetFile={(preload) => setBookmarkPreload(preload)}
               updateBookmarks={(bookmarks) => setBookmarks(bookmarks)}
             />
           }
         />
-        <Route path="/encrypt" element={<Encrypter daemon={daemon} />} />
+        <Route
+          path="/encrypt"
+          element={
+            <Encrypter
+              daemon={daemon}
+              preloadFile={preloadBookmarksForEncryption}
+            />
+          }
+        />
       </Routes>
     </>
   ) : (

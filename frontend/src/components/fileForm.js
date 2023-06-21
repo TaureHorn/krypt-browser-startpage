@@ -9,13 +9,21 @@ export default function FileForm(props) {
       <div className="formInputs">
         <div id="fileInput">
           <label>file:</label>
-          <input
-            autoFocus
-            disabled={props.disabled}
-            name="bookmarksFile"
-            required
-            type="file"
-          />
+          {props.preloadFile ? (
+            <>
+              <span style={{textTransform: "uppercase"}}>current bookmarks</span>
+            </>
+          ) : (
+            <>
+              <input
+                autoFocus
+                disabled={props.disabled}
+                name="bookmarksFile"
+                required
+                type="file"
+              />
+            </>
+          )}
         </div>
         <div id="algorithmDropdown">
           <label>algorithm:</label>

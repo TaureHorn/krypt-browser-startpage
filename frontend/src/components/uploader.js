@@ -23,7 +23,6 @@ export default function Uploader(props) {
       props.daemon
         .decrypt(algorithm, bookmarks, formData.key.value)
         .then((response) => {
-          console.log(response);
           if (isObjectEmpty(response) === false && !response.config) {
             props.bookmarks(response);
           } else {

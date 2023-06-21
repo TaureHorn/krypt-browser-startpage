@@ -9,14 +9,19 @@ export default function Encrypter(props) {
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("encrypt a file");
-  const [formData, setFormData] = useState("");
+  const [formData, setFormData] = useState();
 
   const [fileReceived, setFileReceived] = useState(false);
   const [file, setFile] = useState("");
   const [selectedAlgorithm, saveSelectedAlgorithm] = useState("");
 
   async function dataUploader() {
-    const file = await fileDataExtractor(formData[0].files[0]);
+    let file = "";
+    if (props.preloadFile === true) {
+      file = localStorage.getItem("bookmarks");
+    } else {
+      file = await fileDataExtractor(formData[0].files[0]);
+    }
     if (!file) {
       setMessage("incorrect file type");
       setFormData("");
@@ -52,7 +57,10 @@ export default function Encrypter(props) {
     <>
       <div className="textCenter">
         <h1>{message}</h1>
-        <FileForm formData={(formData) => setFormData(formData)} />
+        <FileForm
+          formData={(formData) => setFormData(formData)}
+          preloadFile={props.preloadFile}
+        />
       </div>
       <div className="dataButtons">
         <button className="lowerButton" onClick={() => navigate("/")}>
