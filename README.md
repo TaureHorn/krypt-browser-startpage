@@ -7,6 +7,8 @@ this is a small project for me to learn more about file uploads, cookies and cry
 
 
 # docker installation
-frontend
 `docker build --t <name> .`
-`docker run -dit -p 3000:3000 <name> <name-of-docker-image>`
+followed by
+`docker run -dit -p <port:port> <name> <name-of-docker-image>`
+frontend port:3000
+backend port:3334
