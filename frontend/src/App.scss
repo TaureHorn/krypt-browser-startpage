@@ -7,7 +7,7 @@ $darkColOp: rgba(0, 0, 0, 0.5);
 $border: 1px solid $col;
 $borderDash: 1px dashed $col;
 $borderHi: 1px solid $colHi;
-$fontSize: 14pt;
+$fontSize: 12pt;
 $padding: 10px;
 
 body {
@@ -71,15 +71,19 @@ button:active {
   left: 50%;
   position: absolute;
   text-align: center;
-  transform: translate(-58%, -70%);
 }
 .alerter {
-  font-size: calc($fontSize * 2);
-  top: 10%;
+  background-color: $col;
+  color: $darkCol;
+  font-size: calc($fontSize * 3);
+  font-weight: bolder;
+  text-transform: uppercase;
+  top: 10px;
+  transform: translate(-50%, 0 );
 }
 .textCenter {
   top: 50%;
-  min-width: 30%;
+  transform: translate(-50%, -70%);
 }
 .border {
   border: $border;
@@ -103,14 +107,11 @@ label {
 /////////////// BOOKMARKS ///////////////////////////////////////////////
 .linksBox {
   display: flex;
-  gap: 10%;
-  margin: 5%;
-  padding: 2%;
-  text-align: left;
-  transform: translate(-20%, -0%);
+  gap: 5%;
+  transform: translate(-29%, -0%);
 }
 .headerSubsection {
-  min-width: 25%;
+  min-width: 22%;
   outline: $borderDash;
 }
 .headerBox {
@@ -128,11 +129,16 @@ label {
   text-transform: uppercase;
 }
 .icon {
-  filter: invert(60%);
+  filter: invert(25%);
+  transition: 0.33s ease;
+}
+.icon:hover {
+  filter: invert(100%);
 }
 .linkEntry {
   align-items: center;
   display: flex;
+  text-align: left;
 }
 .linkEntry:hover,
 .linkEntry:active {
@@ -144,6 +150,10 @@ label {
   padding: 0%;
   text-decoration: none;
   transition: 0.15s linear;
+  width: 100%;
+}
+.link p {
+  text-transform: lowercase;
 }
 .linkEntry:hover p,
 .linkEntry:active p {
@@ -153,7 +163,7 @@ label {
   background-color: #ffffff !important;
 }
 .deleteButton {
-    display: none;
+  display: none;
   height: 24px;
   position: absolute;
   transform: translate(-29px, 2px);
@@ -190,6 +200,7 @@ label {
   background-color: $colOp;
 }
 .lowerButton {
+  border: 1px solid rgba(0, 0, 0, 0);
   padding: 10px;
 }
 .lowerButton:hover {

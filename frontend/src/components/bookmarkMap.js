@@ -5,16 +5,20 @@ import Delete from "../resources/favicon.png";
 
 export default function BookmarkMap(props) {
   const header = props.bookmarks;
-  const iconID = randomString(2);
+  const iconID = randomString(3);
 
-  function iconToggler(id) {
-    const x = document.getElementById(id);
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
+  function sortEntriesByName(a, b) {
+    const nameOne = a.name.toLowerCase();
+    const nameTwo = b.name.toLowerCase();
+    let comparison = 0;
+    if (nameOne > nameTwo) {
+      comparison = 1;
+    } else if (nameOne < nameTwo) {
+      comparison = -1;
     }
+    return comparison;
   }
+  const entries = header[1].sort(sortEntriesByName);
 
   function openModal() {
     document.getElementById(props.modalID).showModal();
@@ -25,11 +29,7 @@ export default function BookmarkMap(props) {
     <>
       <div className="headerSubsection">
         <div key={header[0]}>
-          <div
-            className="headerBox"
-            onMouseEnter={() => iconToggler(iconID)}
-            onMouseLeave={() => iconToggler(iconID)}
-          >
+          <div className="headerBox">
             <p className="linkHeader">{header[0]}</p>
             <img
               src={Plus}
@@ -37,12 +37,11 @@ export default function BookmarkMap(props) {
               className="icon"
               id={iconID}
               onClick={() => openModal()}
-              style={{ display: "none" }}
               title="add new bookmark"
               width="24px"
             />
           </div>
-          {header[1].map((entry, index) => {
+          {entries.map((entry, index) => {
             return (
               <div key={randomString(4)} className="linkEntry">
                 <img
@@ -59,7 +58,13 @@ export default function BookmarkMap(props) {
                   }
                   title="delete entry"
                 />
-                <a key={entry.name} href={entry.url} className="link">
+                <a
+                  key={entry.name}
+                  href={entry.url}
+                  className="link"
+                  target="_blank"
+                  rel="noreferer"
+                >
                   <p style={{ padding: "10px" }} className="link">
                     {entry.name}
                   </p>

@@ -105,18 +105,9 @@ export default function Bookmarks(props) {
       </dialog>
       {/*/////////////// MAP /////////////////////////////////////////////////////*/}
       <div id="alerter">
-        {deleteMode ? (
-          <>
-            <p
-              className="alerter border padding"
-              style={{ fontWeight: "bold" }}
-            >
-              DELETE MODE ENABLED:
-            </p>
-          </>
-        ) : (
-          <></>
-        )}
+        <p className="alerter padding">
+          {deleteMode ? <>delete mode enabled</> : <>krypt</>}
+        </p>
       </div>
       <div className="textCenter">
         <div className="linksBox">{dataMap}</div>
