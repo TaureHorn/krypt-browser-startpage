@@ -8,9 +8,14 @@ import FileForm from "./fileForm";
 export default function Encrypter(props) {
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState("encrypt a file");
-  const [formData, setFormData] = useState();
+  const [message, setMessage] = useState();
+  useEffect(() => {
+    props.preloadFile
+      ? setMessage("encrypt current bookmarks")
+      : setMessage("encrypt a file");
+  }, [props.preloadFile]);
 
+  const [formData, setFormData] = useState();
   const [fileReceived, setFileReceived] = useState(false);
   const [file, setFile] = useState("");
   const [selectedAlgorithm, saveSelectedAlgorithm] = useState("");
