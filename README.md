@@ -4,10 +4,11 @@ this is a small project for me to learn more about file uploads, cookies, crypto
 
 # docker installation
 ```
-docker build --t <name> .
+docker build -t <name> .
 ```
 followed by
 ```
-docker run -dit -p <port:port> <name> <name-of-docker-image>
+docker run -dit -p <port:port> --name <name> <name-of-docker-image>
 ```
-frontend port:3000, backend port:3334
+frontend port "3000:3000"
+backend port "3334:3334"
