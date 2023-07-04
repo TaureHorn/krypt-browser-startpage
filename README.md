@@ -8,7 +8,7 @@ docker build -t <name> .
 ```
 followed by
 ```
-docker run -dit -p <port:port> --name <name> <name-of-docker-image>
+docker run -dit -p <hostPort:containerPort> --name <name> <name-of-docker-image>
 ```
 frontend port "3000:3000"
 backend port "3334:3334"
